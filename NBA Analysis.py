@@ -18,7 +18,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 st.sidebar.header('Input Queries')
 selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950, 2024))))
 
-#Scraping for Data
+#Scraping for Datas
 @st.cache_data
 def load_data(year):
     url = 'https://www.basketball-reference.com/leagues/NBA_' + str(year) + '_per_game.html'
@@ -53,11 +53,27 @@ c_category = st.sidebar.multiselect('1st Chart', unique_c)
 
 #Visualising Data
 
-fig = plt.figure()
-df_selected_team[c_category].value_counts().plot(kind='bar', color='orange')
-plt.title(c_category)
-st.pyplot(fig)
+#unique_c = list(c_category)
+print(list(enumerate(c_category)))
+plt.figure(figsize= (30,45))
+for i in enumerate(c_category):
+    display = plt.subplot(2,1,i[0]+1)
+    display = plt.figure()
+    df_selected_team[c_category].value_counts().plot(kind='bar', color='orange')
+    plt.show()
+    st.pyplot(display)
 
+graph = st.sidebar.multiselect('Graph', unique_c)
+print(list(enumerate(graph)))
+plt.figure(figsize= (30,45))
+for i in enumerate(graph):
+    display = plt.subplot(2,1,i[0]+1)
+    display = plt.figure()
+    df_selected_team[graph].value_counts().plot(kind='bar', color='orange')
+    plt.show()
+    st.pyplot(display)
+else:
+    graph = []
 
 def filedownload(df):
     csv = df.to_csv(index=False)
@@ -66,4 +82,3 @@ def filedownload(df):
     return href
 
 st.markdown(filedownload(df_selected_team), unsafe_allow_html=True)
-
